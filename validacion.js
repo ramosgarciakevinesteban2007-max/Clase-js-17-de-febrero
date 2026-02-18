@@ -1,44 +1,67 @@
-// let usuario = document.getElementById("usuario")
+document.addEventListener("DOMContentLoaded", function() {
+   const usuario = document.getElementById("usuario")
+   const password = document.getElementById("password")
+   const mensaje = document.getElementById("mensaje")
+   const formulario = document.getElementById("formulario")
 
-// usuario.addEventListener("keydown",function(evento){
-//     if(evento.keyCode === 8){
-//      evento.preventDefault()  
-//      this.value += "borrando" 
-//     }
-// })
+   if (usuario) {
+      usuario.addEventListener("input", function() {
+         const valorOriginal = this.value
 
-let usuario = document.getElementById("usuario")
-let password = document.getElementById("password")
-let mensaje = document.getElementById("mensaje")
- usuario.addEventListener("input",function(evento){
-   this.value = this.value.toLowerCase()
-   if(/[^a-z]/g.test(this.value)){
-      mensaje.textContent ="Esta tratando de ingresar un valor incorrecto"
-      this.style.borderColor = "red"
-      this.borderColor = "2px solid"
-   }
-   else if (this.value){
-      mensaje.textContent = "usuario correcto"
-   }
-   else{
-      mensaje.textContent ="campo requerido"
-       this.style.borderColor = "green"
-       this.borderColor = "2px solid"
-   }   
-   this.value = valorOriginal.replace(/[^a-z]/g,"")
-})
+         this.value = this.value.toLowerCase()
 
-password.addEventListener("input",function(){
-   let mensajePassword = document.getElementById("mensaje-password")
-   
-   if(this.value.length < 10){
-      mensajePassword.innerHTML = "<p class='text-danger'>La contraseña debe tener al menos 10 caracteres</p>"
-      this.style.borderColor = "red"
-      this.style.border = "2px solid red"
+
+         const filtrado = this.value.replace(/[^a-z0-9._-]/g, "")
+
+         if (valorOriginal.length === 0) {
+            if (mensaje) mensaje.textContent = "campo requerido"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else if (/[^a-z0-9._-]/.test(valorOriginal)) {
+            if (mensaje) mensaje.textContent = "Está tratando de ingresar un valor incorrecto"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else if (filtrado.length < 3) {
+            if (mensaje) mensaje.textContent = "El usuario debe tener mínimo 3 caracteres"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else {
+            if (mensaje) mensaje.textContent = "usuario correcto"
+            if (mensaje) mensaje.className = "form-text text-success"
+            this.style.border = "2px solid green"
+         }
+         this.value = filtrado
+      })
    }
-   else{
-      mensajePassword.innerHTML = "<p class='text-success'>Contraseña válida</p>"
-      this.style.borderColor = "green"
-      this.style.border = "2px solid green"
+
+   if (password) {
+      password.addEventListener("input", function() {
+         const mensajePassword = document.getElementById("mensaje-password")
+
+         if (!mensajePassword) return
+
+         if (this.value.length < 10) {
+            mensajePassword.innerHTML = "<p class='text-danger'>La contraseña debe tener al menos 10 caracteres</p>"
+            this.style.border = "2px solid red"
+         } else {
+            mensajePassword.innerHTML = "<p class='text-success'>Contraseña válida</p>"
+            this.style.border = "2px solid green"
+         }
+      })
+   }
+
+   if (formulario) {
+      formulario.addEventListener("submit", function(evento) {
+         evento.preventDefault()
+
+         const usuarioValido = usuario && usuario.value.length >= 3
+         const passwordValido = password && password.value.length >= 10
+
+         if (usuarioValido && passwordValido) {
+            alert("¡Formulario enviado correctamente!\nUsuario: " + usuario.value + "\nContraseña: " + "*".repeat(password.value.length))
+         } else {
+            alert("Por favor, completa correctamente todos los campos")
+         }
+      })
    }
 })
