@@ -16,17 +16,32 @@
                             <form id="formulario" novalidate>
                                 <div class="mb-3">
                                     <label for="usuario" class="form-label">Usuario</label>
-                                    <input type="text" class="form-control" id="usuario" aria-describedby="usuarioHelp" required>
+                                    <input type="text" class="form-control" id="usuario" aria-describedby="usuarioHelp">
                                     <div id="mensaje" class="form-text text-muted"></div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" required>
-                                    <div id="mensaje-password" class="form-text text-muted"></div>
+                                    <label for="email" class="form-label">Correo electrónico</label>
+                                    <input type="text" class="form-control" id="email" aria-describedby="emailHelp">
+                                    <div id="mensaje-email" class="form-text text-muted"></div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password">
+                                        <button type="button" id="togglePassword" class="btn btn-outline-secondary" tabindex="-1">Mostrar</button>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div id="mensaje-password" class="form-text text-muted"></div>
+                                        <div id="password-counter" class="form-text text-muted">0 caracteres</div>
+                                    </div>
+                                    <div id="password-strength" class="form-text mt-1"></div>
+                                </div>
+
+                                <div id="form-status" class="mb-3" aria-live="polite"></div>
+
+                                <button type="submit" id="submitBtn" class="btn btn-primary w-100">Enviar</button>
                             </form>
                         </div>
                     </div>
