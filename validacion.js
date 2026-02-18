@@ -1,67 +1,67 @@
-let usuario = document.getElementById("usuario")
-let password = document.getElementById("password")
-let mensaje = document.getElementById("mensaje")
-let formulario = document.getElementById("formulario")
+document.addEventListener("DOMContentLoaded", function() {
+   const usuario = document.getElementById("usuario")
+   const password = document.getElementById("password")
+   const mensaje = document.getElementById("mensaje")
+   const formulario = document.getElementById("formulario")
 
-// Validación del usuario - permite letras, números, guiones (-) y puntos (.)
-// Mínimo 3 caracteres de longitud
-usuario.addEventListener("input", function(evento) {
-   // Permitir solo letras, números, guiones y puntos
-   this.value = this.value.replace(/[^a-zA-Z0-9.-]/g, "")
-   
-   if (this.value.length === 0) {
-      mensaje.textContent = "Campo requerido"
-      mensaje.className = "error-message"
-      this.classList.remove("is-valid")
-      this.classList.add("is-invalid")
-   } 
-   else if (this.value.length < 3) {
-      mensaje.textContent = "Mínimo 3 caracteres de longitud"
-      mensaje.className = "error-message"
-      this.classList.remove("is-valid")
-      this.classList.add("is-invalid")
-   }
-   else {
-      mensaje.textContent = "Usuario válido"
-      mensaje.className = "success-message"
-      this.classList.remove("is-invalid")
-      this.classList.add("is-valid")
-   }
-})
+   if (usuario) {
+      usuario.addEventListener("input", function() {
+         const valorOriginal = this.value
 
-// Validación de contraseña
-password.addEventListener("input", function() {
-   let mensajePassword = document.getElementById("mensaje-password")
-   
-   if (this.value.length === 0) {
-      mensajePassword.textContent = "Campo requerido"
-      mensajePassword.className = "error-message"
-      this.classList.remove("is-valid")
-      this.classList.add("is-invalid")
-   }
-   else if (this.value.length < 10) {
-      mensajePassword.textContent = "La contraseña debe tener al menos 10 caracteres"
-      mensajePassword.className = "error-message"
-      this.classList.remove("is-valid")
-      this.classList.add("is-invalid")
-   }
-   else {
-      mensajePassword.textContent = "Contraseña válida"
-      mensajePassword.className = "success-message"
-      this.classList.remove("is-invalid")
-      this.classList.add("is-valid")
-   }
-})
+         this.value = this.value.toLowerCase()
 
-// Validación del formulario al enviar
-formulario.addEventListener("submit", function(evento) {
-   evento.preventDefault()
-   
-   // Validar que ambos campos sean válidos
-   if (usuario.value.length >= 3 && password.value.length >= 10) {
-      alert("¡Formulario enviado correctamente!\nUsuario: " + usuario.value + "\nContraseña: " + "*".repeat(password.value.length))
-      // Aquí iría el código para enviar el formulario al servidor
-   } else {
-      alert("Por favor, completa correctamente todos los campos")
+
+         const filtrado = this.value.replace(/[^a-z0-9._-]/g, "")
+
+         if (valorOriginal.length === 0) {
+            if (mensaje) mensaje.textContent = "campo requerido"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else if (/[^a-z0-9._-]/.test(valorOriginal)) {
+            if (mensaje) mensaje.textContent = "Está tratando de ingresar un valor incorrecto"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else if (filtrado.length < 3) {
+            if (mensaje) mensaje.textContent = "El usuario debe tener mínimo 3 caracteres"
+            if (mensaje) mensaje.className = "form-text text-danger"
+            this.style.border = "2px solid red"
+         } else {
+            if (mensaje) mensaje.textContent = "usuario correcto"
+            if (mensaje) mensaje.className = "form-text text-success"
+            this.style.border = "2px solid green"
+         }
+         this.value = filtrado
+      })
+   }
+
+   if (password) {
+      password.addEventListener("input", function() {
+         const mensajePassword = document.getElementById("mensaje-password")
+
+         if (!mensajePassword) return
+
+         if (this.value.length < 10) {
+            mensajePassword.innerHTML = "<p class='text-danger'>La contraseña debe tener al menos 10 caracteres</p>"
+            this.style.border = "2px solid red"
+         } else {
+            mensajePassword.innerHTML = "<p class='text-success'>Contraseña válida</p>"
+            this.style.border = "2px solid green"
+         }
+      })
+   }
+
+   if (formulario) {
+      formulario.addEventListener("submit", function(evento) {
+         evento.preventDefault()
+
+         const usuarioValido = usuario && usuario.value.length >= 3
+         const passwordValido = password && password.value.length >= 10
+
+         if (usuarioValido && passwordValido) {
+            alert("¡Formulario enviado correctamente!\nUsuario: " + usuario.value + "\nContraseña: " + "*".repeat(password.value.length))
+         } else {
+            alert("Por favor, completa correctamente todos los campos")
+         }
+      })
    }
 })
